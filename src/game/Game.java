@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import component.*;
 
 public class Game {
-    private ArrayList<TriPair<Integer, Integer, Long>> players;//id, last mov, last bomb
+    public ArrayList<TriPair<Integer, Integer, Long>> players;//id, last mov, last bomb
     private final ArrayList<TriPair<Integer, Integer, Integer>> bombs;//x, y, time --> Coordinate e tempo rimanente all'esplosione
     private final Cell[][] board;
     public boolean start;
@@ -44,7 +44,7 @@ public class Game {
 
     public int addPlayer() {
         if (players.size() == 4 || start) return -1;
-        players.add(new TriPair<>(players.size() + 1, 0, (long) -1));
+        players.add(new TriPair<>(players.size() + 1, 1, (long) -1));
         switch (players.size()) {
             case 1:
                 board[0][0].setPlayer(players.getLast().f);

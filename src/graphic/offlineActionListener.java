@@ -53,17 +53,17 @@ public class offlineActionListener implements ActionListener {
             case "2 Players": // Avvia gioco offline con due giocatori
                 frame.dispose();
                 vis = start(2);
-                new keybindWindow(2, vis);
+                new keybindWindow(2);
                 break;
             case "3 Players": // Avvia gioco offline con tre giocatori
                 frame.dispose();
                 vis = start(3);
-                new keybindWindow(3, vis);
+                new keybindWindow(3);
                 break;
             case "4 Players": // Avvia gioco offline con quattro giocatori
                 frame.dispose();
                 vis = start(4);
-                new keybindWindow(4, vis);
+                new keybindWindow(4);
                 break;
         }
     }

@@ -44,8 +44,9 @@ public class Visualizer extends JFrame{
     //id: 1, 2, 3, 4
     //side: back, front, left, right
     //type: 1, 2, 3
-    String playerMovement = common_address + "player%d" + File.separator + "%sMoving%d.png";
-    ImageIcon[] playerIcon = new ImageIcon[4];
+    String playerMovement = common_address + "player%d" + File.separator + "%d.png";
+    //graphics/player%d/%d.png;
+    ImageIcon[][] playerIcon = new ImageIcon[4][4];
     ImageIcon wall = new ImageIcon(Wall_add);
     ImageIcon[] obs = {new ImageIcon(String.format(String.format(obstacles_add, "bush"))), new ImageIcon(String.format(String.format(obstacles_add, "crate")))};
     ImageIcon[] bomb = new ImageIcon[3];
@@ -59,7 +60,11 @@ public class Visualizer extends JFrame{
         Font pixelFont = new pixelFont().getPixelFont().deriveFont(24f);
 
         for (int i = 0; i < playerIcon.length; i++) {
-            playerIcon[i] = new ImageIcon(String.format(playerMovement, i+1, "front", 1));
+            for (int j = 0; j < 4; j++) {
+                playerIcon[i][j] = new ImageIcon(String.format(playerMovement, i+1, j));
+                System.out.println(String.format(playerMovement, i+1, j));
+            }
+
         }
 
         for (int i = 0; i < bomb.length; i++) {
@@ -111,7 +116,7 @@ public class Visualizer extends JFrame{
         this.setLocationRelativeTo(null);
     }
 
-    private void init(){ //Inizializza le JLabel usate per il campo di gioco
+    private void init(){ //Inizializza le JLabel
         for (int i = 0; i < game.getBoard().length; i++) {
             for (int j = 0; j < game.getBoard()[0].length; j++) {
                 campo[i][j] = new JLabel();
@@ -121,7 +126,7 @@ public class Visualizer extends JFrame{
         }
     }
 
-    public void reload(){ //Aggiorna lo stato del campo a livello grafico
+    public void reload(){ //Aggiorna lo campo
         System.out.println("reload");
         if(game.isOver()){
             if(!finish){
@@ -138,20 +143,35 @@ public class Visualizer extends JFrame{
                 if(last[i][j] != null && last[i][j].equals(board[i][j]) && !board[i][j].bomb){
                     continue;
                 }
-                if (board[i][j].player)
+                if (board[i][j].player){
                     //campo[i][j].setText("P");
-                    campo[i][j].setIcon(playerIcon[board[i][j].id-1]);
+                    int id = board[i][j].id;
+                    for (int k = 0; k < game.players.size(); k++) {
+                        if(game.players.get(k).f==id){
+                            //mosse 0-->up, 1-->down, 2-->dx, 3-->sx
+                            campo[i][j].setIcon(playerIcon[id-1][game.players.get(k).s]);
+                            break;
+                        }
+                    }
+                    continue;
+                }
+
                 else if (board[i][j].wall)
                     //campo[i][j].setText("W");
                     campo[i][j].setIcon(wall);
                 else if (board[i][j].obs_bush)
                     //campo[i][j].setText("B");
                     campo[i][j].setIcon(obs[0]);
-                else if (board[i][j].obs_crate)
+                else if (board[i][j].obs_crate){
                     //campo[i][j].setText("C");
                     campo[i][j].setIcon(obs[1]);
-                else if(!board[i][j].bomb)
+                    continue;
+                }
+                else if(!board[i][j].bomb){
                     campo[i][j].setIcon(back);
+                    continue;
+                }
+
                 else
                     for (int k = 0; k < game.getBombs().size(); k++) {
                         if(game.getBombs().get(k).s == i && game.getBombs().get(k).f == j){

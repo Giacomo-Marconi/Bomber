@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 
 public class keybindWindow  extends JFrame { //JFrame che mostra i controlli del gioco per un tempo determinato, poi avvia il gioco vero
@@ -23,10 +21,9 @@ public class keybindWindow  extends JFrame { //JFrame che mostra i controlli del
     JLabel player3Label = new JLabel();
     JLabel player4Label = new JLabel();
 
-    public keybindWindow(int numPlayers, JFrame visualizerWindow) {
-        //Caratteristiche e comportamento del frame
+    public keybindWindow(int numPlayers) {
         super("Keybinds");
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Chiude solo la finestra, non il programma
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Chiude solo la finestra
         this.setResizable(false);
         this.setSize(800, 200);
         this.setLayout(new GridLayout(4,1));
@@ -73,35 +70,28 @@ public class keybindWindow  extends JFrame { //JFrame che mostra i controlli del
                 break;
             case 3:
                 player2Label.setText("Player 2: I J K L  per muoversi, - per piazzare la bomba.");
-                player3Label.setText("Player 3: Frecce per muoversi , RIGHT CTRL per piazzare la bomba.");
+                player3Label.setText("Player 3: T F G H , Y per piazzare la bomba.");
                 player4Label.setText("\"Cereale\" viene da Ceres, la dea greca dell'agricoltura." );
                 break;
             case 4:
                 player2Label.setText("Player 2: I J K L  per muoversi, - per piazzare la bomba.");
-                player3Label.setText("Player 3: Frecce per muoversi , RIGHT CTRL per piazzare la bomba.");
+                player3Label.setText("Player 3: T F G H , Y per piazzare la bomba.");
                 player4Label.setText("Player 4: 8 4 5 6 per muoversi, 0 per piazzare la bomba.");
                 break;
         }
 
-        // Crea un timer che aspetta 10 secondi (10000 millisecondi)
+        //Timer
         Timer timer = new Timer(10000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();  //Toglie il frame dalla RAM
+                dispose();
             }
         });
         // Avvia il timer
         timer.start();
-        //Aggiungi listener per la chiusura della finestra
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                visualizerWindow.dispose(); //Chiude la finestra di gioco
-                new selectionWindow();
-            }
-        });
+
         //Modifica icona della finestra
         this.setIconImage(new ImageIcon("graphics"+File.separator+"decoration"+File.separator+"icon.png").getImage());
-        this.setVisible(true); //Rende visibile la finestra (alla fine perchè altrimenti non si vedono le modifiche fatte ai pannelli)
+        this.setVisible(true);
     }
 }
